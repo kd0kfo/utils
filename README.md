@@ -1,4 +1,4 @@
 utils
 =====
 
-Miscellaneous Linux Utility functions I've written.
+Miscellaneous Linux Utility functions I've written and/or used.

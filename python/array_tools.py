@@ -11,3 +11,14 @@ def tail(arr, N=5):
     """
     
     print(arr[-N:])
+
+def rmse(arr):
+    """
+    Calculates the RMSE of an array of data.
+    """
+    import numpy as np
+    from math import sqrt
+
+    avg = np.mean(arr)
+    return sqrt(np.mean((arr-avg)**2))
+    

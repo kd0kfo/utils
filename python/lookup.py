@@ -16,6 +16,7 @@
 # http://www.gnu.org/licenses/gpl.html
 #
 
+import local_settings
 import httplib
 from sys import stdout,argv
 

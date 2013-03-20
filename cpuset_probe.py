@@ -3,6 +3,8 @@
 import os
 import os.path as OP
 
+DEFAULT_CORE_COUNT = 640
+
 def parse_cpus(cpufilename):
     retval = []
     with open(cpufilename,"r") as cpufile:
@@ -39,17 +41,44 @@ def get_core_info(directory,query = None,free_list = None):
                     if core in free_list:
                         free_list.remove(core)
 
+def print_usage():                        
+    print("Usage: cpuset_probe.py [-d DIR] [-f] [-q LIST]")
+    print("Options:")
+    print("-n, --num_cores INT\tNumber of cores. Default: {0}".format(core_count))
+    print("-d, --directory PATH\tDirectory of CPUSET files. Default: /dev/cpuset")
+    print("-f, --free\t\tDisplay free cores.")
+    print("-q, --query LIST\tLookup specific cores. Core list should be a commas separated list (no whitespace)")
+
 if __name__ == "__main__":
     from sys import argv
+    from getopt import getopt
+
     base_dir = "/dev/cpuset"
+    core_count = DEFAULT_CORE_COUNT
     query = None
-    free_list = list(xrange(0,640))
-    if len(argv) != 1:
-        base_dir = argv[1]
-    if len(argv) > 2:
-        query = [int(i) for i in argv[2].split(',')]
+    free_list = None
+    show_free_list = False
+    (opts,args) = getopt(argv[1:],"d:hq:",["directory=","help","free","query="])
+
+    for (opt,optarg) in opts:
+        while opt[0] == "-":
+            opt = opt[1:]
+        if opt in ["d","directory"]:
+            base_dir = optarg
+        elif opt in ["f","free"]:
+            free_list = list(xrange(0,core_count))
+            show_free_list = True
+        elif opt in ["h", "help"]:
+            print_usage()
+            exit(0)
+        elif opt in ["q","query"]:
+            query = [int(i) for i in optarg.split(',')]
+            
+
     get_core_info(base_dir,query,free_list)
-    if not free_list:
-        print("No free cores")
-    else:
-        print("Free cores: {0}".format(", ".join([str(i) for i in free_list])))
+    
+    if show_free_list:
+        if not free_list:
+            print("No free cores")
+        else:
+            print("Free cores: {0}".format(", ".join([str(i) for i in free_list])))

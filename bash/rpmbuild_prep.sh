@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mkdir {BUILD,RPMS,SOURCES,SPECS,SRPMS}

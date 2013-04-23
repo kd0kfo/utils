@@ -10,7 +10,10 @@ def parse_resource(resfilename):
     retval = []
     with open(resfilename,"r") as resfile:
         for line in resfile:
-            tokens = line.strip().split(",")
+            line = line.strip()
+            if not line:
+                continue # If, for example, no cores are assigned in cpus, line will have only contained an EOL character
+            tokens = line.split(",")
             for token in tokens:
                 if not "-" in token:
                     retval.append(int(token))

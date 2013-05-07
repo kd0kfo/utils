@@ -1,5 +1,6 @@
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
 import java.net.URI;
 import org.apache.hadoop.conf.Configuration;
@@ -8,6 +9,28 @@ import java.io.IOException;
 
 public class copyMerge
 {
+
+    public static long fileSize(Path path, Configuration conf) throws IOException
+    {
+	long retval = 0;
+
+	FileSystem fs = path.getFileSystem(conf);
+	FileStatus stat = fs.getFileStatus(path);
+	if(stat.isDir())
+	    {
+		FileStatus[] dirents = fs.listStatus(path);
+		for(int i = 0;i<dirents.length;i++)
+		    {
+			retval += fileSize(dirents[i].getPath(),conf);
+		    }
+	    }
+	else
+	    {
+		retval += stat.getLen();
+	    }
+		
+	return retval;
+    }
 
     public static void print_usage()
     {
@@ -33,7 +56,7 @@ public class copyMerge
 	FileSystem infs,outfs;
 	infs = outfs = null;
 	String addString = null;
-	
+
 	try
 	    {
 		infs = FileSystem.get(new URI(indir), conf);
@@ -66,6 +89,26 @@ public class copyMerge
 		System.err.println("File merge failed: " + ioe.getMessage());
                 System.exit(1);
 	    }
+
+
+	try
+	    {
+		long inbytes = fileSize(inpath,conf);
+		long outbytes = fileSize(outpath,conf);
+		System.out.println("Read in " + Long.toString(inbytes) + " bytes");
+		System.out.println("Merged " + Long.toString(outbytes) + " bytes");
+		if(inbytes != outbytes)
+		    {
+			System.err.println("Input and output file sizes differ!");
+			System.exit(1);
+		    }
+	    }
+	catch(IOException ioe)
+	    {
+		System.err.println(ioe.getMessage());
+		System.exit(42);
+	    }
+	
 
     }
 

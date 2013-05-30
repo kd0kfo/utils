@@ -64,12 +64,14 @@ if __name__ == "__main__":
     free_list = None
     show_free_list = False
     search_type = "cpus"
-    (opts,args) = getopt(argv[1:],"d:hmq:",["directory=","help","free","mems","query="])
+    (opts,args) = getopt(argv[1:],"c:d:fhmq:",["core_count=","directory=","help","free",,"mems","query="])
 
     for (opt,optarg) in opts:
         while opt[0] == "-":
             opt = opt[1:]
-        if opt in ["d","directory"]:
+        if opt in ["c", "core_count"]:
+            core_count = int(optarg)
+        elif opt in ["d","directory"]:
             base_dir = optarg
         elif opt in ["f","free"]:
             free_list = list(xrange(0,core_count))

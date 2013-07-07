@@ -5,6 +5,10 @@
 # JSON file with the ISBN in the file name. Requires a
 # file with the isbn of each book, one per line.
 #
+# Expects a file in the PYTHONPATH called local_settings
+# that has a variable called ISBNDB_KEY that should be a
+# string that contains the ISBNdb API key.
+#
 # Usage: ./isbn_lookup.py <isbn list>
 
 import local_settings

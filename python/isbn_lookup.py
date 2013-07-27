@@ -20,11 +20,11 @@ import json
 web_key = local_settings.ISBNDB_KEY
 url_format = "http://isbndb.com/api/v2/json/{0}/book/{1}"
 input_filename = argv[1]
+verbose = True
 
 
 def get_book_url(isbn):
     return url_format.format(web_key, isbn)
-
 
 with open(input_filename, "r") as input_file:
     for line in input_file:
@@ -38,7 +38,9 @@ with open(input_filename, "r") as input_file:
         webcontent = urllib.urlopen(get_book_url(isbn))
         webtext = webcontent.read()
         if not webtext:
-            continue
+            webtext = json.dumps({"error": "Unknown ISBN"})
 
+        if verbose:
+            print("Saving data for isbn {0}".format(isbn))
         with open("{0}.json".format(isbn), "w") as output:
             output.write(webtext)

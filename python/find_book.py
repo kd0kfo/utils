@@ -44,8 +44,10 @@ catalog = pickle.load(open(pickle_filename, "rb"))
 
 for author in author_search:
     found_author = False
+    lower_author = author.lower()
     for book_author in catalog["authors"]:
-        if author in book_author:
+        lower_book_author = book_author.lower()
+        if lower_author in lower_book_author:
             for book in catalog["authors"][book_author]:
                 print_book(book)
             found_author = True
@@ -55,10 +57,12 @@ for author in author_search:
 
 for title in title_search:
     found_title = False
+    lower_title = title.lower()
     for book_title in catalog["titles"]:
-        if title in book_title:
+        lower_book_title = book_title.lower()
+        if lower_title in lower_book_title:
             for book in catalog["titles"][book_title]:
                 print_book(book)
             found_title = True
     if not found_title:
-        print("Title not found: {0}".format(author))
+        print("Title not found: {0}".format(title))

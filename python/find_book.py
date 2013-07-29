@@ -14,11 +14,17 @@ import pickle
 
 
 def print_book(book):
+    if book["dewey_decimal"]:
+        dewey = book["dewey_decimal"]
+    elif book["dewey_normal"]:
+        dewey = book["dewey_normal"]
+    else:
+        dewey = "Unknown"
     author_list = [author["name"].encode("UTF-8")
                    for author in book["author_data"]]
     print("{0} by {1}. ISBN: {2}. Dewey Decimal: {3}"
           .format(book["title"], " and ".join(author_list),
-                  book["isbn10"], book["dewey_decimal"]))
+                  book["isbn10"], dewey))
 
 
 (opts, args) = getopt(argv[1:], "a:t:", ["author=", "title="])

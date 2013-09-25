@@ -33,19 +33,19 @@ for (opt, optargs) in opts:
     elif opt in ["o", "output"]:
         outfile = open(optargs, "w")
 
-total_in_bytes = 0
+total_in_bytes = 0.0
 for line in infile:
     val = line.strip()
 
     # If it's already a number, i.e. no units attached,
     # simply add and continue
     if val.isdigit():
-        total_in_bytes += int(val)
+        total_in_bytes += float(val)
         continue
 
     # Get units and convert number to bytes
     unit = val[-1].lower()
-    val = int(val[0:-1])
+    val = float(val[0:-1])
 
     factor = get_conversion_factor(unit)
 

@@ -18,9 +18,10 @@ def get_conversion_factor(units):
 
 infile = stdin
 outfile = stdout
+output_factor = 1
 
 short_opts = "i:o:"
-long_opts = ["input=", "output="]
+long_opts = ["input=", "output=", "output_units="]
 
 (opts, args) = getopt(argv[1:], short_opts, long_opts)
 
@@ -32,6 +33,8 @@ for (opt, optargs) in opts:
         infile = open(optargs, "r")
     elif opt in ["o", "output"]:
         outfile = open(optargs, "w")
+    elif opt == "output_units":
+        output_factor = get_conversion_factor(optargs.lower())
 
 total_in_bytes = 0.0
 for line in infile:
@@ -51,4 +54,4 @@ for line in infile:
 
     total_in_bytes += factor*val
 
-print(total_in_bytes)
+print(total_in_bytes / output_factor)

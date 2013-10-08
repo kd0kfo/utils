@@ -17,7 +17,7 @@ def print_usage():
     print("-i, --input FILE\t\tInput file to be read (Default: Standard Input)")
     print("-o, --output FILE\t\tOutput file to be used"
           " (Default: Standard Output)")
-    print("    --output_utils CHAR\t\tUnits to be used (case insensitive)."
+    print("    --output_units CHAR\t\tUnits to be used (case insensitive)."
           " Options are K, M, G and T (Default: none)")
     
 

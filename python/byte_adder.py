@@ -9,6 +9,18 @@ from getopt import getopt
 KNOWN_UNITS = {"k": 1024, "m": 1048576, "g": 1073741824, "t": 1099511627776}
 
 
+def print_usage():
+    from os.path import basename
+    print("Usage: {0} [-h] [-i FILE] [-o FILE] [--output_utils CHAR]"
+          .format(basename(argv[0])))
+    print("Options:")
+    print("-i, --input FILE\t\tInput file to be read (Default: Standard Input)")
+    print("-o, --output FILE\t\tOutput file to be used"
+          " (Default: Standard Output)")
+    print("    --output_utils CHAR\t\tUnits to be used (case insensitive)."
+          " Options are K, M, G and T (Default: none)")
+    
+
 def get_conversion_factor(units):
     if not units in KNOWN_UNITS:
         raise Exception("Unkown Units: {0}".format(units))
@@ -20,8 +32,8 @@ infile = stdin
 outfile = stdout
 output_factor = 1
 
-short_opts = "i:o:"
-long_opts = ["input=", "output=", "output_units="]
+short_opts = "hi:o:"
+long_opts = ["help", "input=", "output=", "output_units="]
 
 (opts, args) = getopt(argv[1:], short_opts, long_opts)
 
@@ -29,7 +41,10 @@ for (opt, optargs) in opts:
     while opt[0] == '-':
         opt = opt[1:]
 
-    if opt in ["i", "input"]:
+    if opt in ["h", "help"]:
+        print_usage()
+        exit(0)
+    elif opt in ["i", "input"]:
         infile = open(optargs, "r")
     elif opt in ["o", "output"]:
         outfile = open(optargs, "w")

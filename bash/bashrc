@@ -29,5 +29,9 @@ if [[ $(declare -f -F __git_ps1) ]];then
 	GIT_PS1_FUNCT='$(__git_ps1 "(%s)")'
 fi
 
-PS1="[\[\e[1;31m\]\D{%s} \h \W ${GIT_PS1_FUNCT}\[\e[0m\]]$ "
+if [[ -f $HOME/.bash_color ]];then
+	source $HOME/.bash_color
+fi
+
+PS1="[${BASH_COLOR_START}\D{%s} \h \W ${GIT_PS1_FUNCT}${BASH_COLOR_END}]$ "
 

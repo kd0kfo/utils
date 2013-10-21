@@ -1,0 +1,33 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment and startup programs
+export EDITOR=vim
+
+PATH=$PATH:$HOME/bin
+if [ -d $HOME/.local/bin ];then
+PATH=$PATH:$HOME/.local/bin
+fi
+export PATH
+
+if [ -f $HOME/.bash_aliases ];then
+	. $HOME/.bash_aliases
+fi
+
+# Git shell stuff
+for git_file in .git-completion.bash .git-prompt.sh;do
+	if [[ -f $HOME/${git_file} ]];then
+		source $HOME/${git_file}
+	fi
+done
+
+if [[ $(declare -f -F __git_ps1) ]];then
+	GIT_PS1_FUNCT='$(__git_ps1 "(%s)")'
+fi
+
+PS1="[\[\e[1;31m\]\D{%s} \h \W ${GIT_PS1_FUNCT}\[\e[0m\]]$ "
+

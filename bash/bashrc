@@ -5,12 +5,15 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+# Shared home happiness
+export HISTFILE=$HOME/.bash_history.$(hostname)
+
 # User specific environment and startup programs
 export EDITOR=vim
 
 PATH=$PATH:$HOME/bin
 if [ -d $HOME/.local/bin ];then
-PATH=$PATH:$HOME/.local/bin
+   PATH=$PATH:$HOME/.local/bin
 fi
 export PATH
 

@@ -64,7 +64,7 @@ if __name__ == "__main__":
     free_list = None
     show_free_list = False
     search_type = "cpus"
-    (opts,args) = getopt(argv[1:],"c:d:fhmq:",["core_count=","directory=","help","free",,"mems","query="])
+    (opts,args) = getopt(argv[1:],"c:d:fhmq:",["core_count=","directory=","help","free","mems","query="])
 
     for (opt,optarg) in opts:
         while opt[0] == "-":

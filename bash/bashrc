@@ -28,6 +28,11 @@ for git_file in .git-completion.bash .git-prompt.sh;do
 	fi
 done
 
+# Jar library
+if [[ -d $HOME/jars ]];then
+	export JARS=$HOME/jars
+fi
+
 if [[ $(declare -f -F __git_ps1) ]];then
 	GIT_PS1_FUNCT='$(__git_ps1 "(%s)")'
 fi

@@ -40,7 +40,12 @@ fi
 # Python stuff
 if [[ ! -z $VIRTUALENVS ]];then
 activate() {
-		source $VIRTUALENVS/$1/bin/activate
+	VENV=$1
+	if [[ -z $VENV ]];then
+		\ls $VIRTUALENVS
+	else
+		source $VIRTUALENVS/$VENV/bin/activate
+	fi
 }
 fi
 

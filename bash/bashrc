@@ -37,6 +37,14 @@ if [[ $(declare -f -F __git_ps1) ]];then
 	GIT_PS1_FUNCT='$(__git_ps1 "(%s)")'
 fi
 
+# Python stuff
+if [[ ! -z $VIRTUALENVS ]];then
+activate() {
+		source $VIRTUALENVS/$1/bin/activate
+}
+fi
+
+# Prompt stuff
 if [[ -f $HOME/.bash_color ]];then
 	source $HOME/.bash_color
 fi

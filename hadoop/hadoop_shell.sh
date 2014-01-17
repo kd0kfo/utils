@@ -3,9 +3,17 @@
 echo Welcome to Hadoop Shell. 
 echo To exit the shell, type exit and press enter.
 
+lastline=""
 while read -p "> " line;do
-    if [[ $line == exit ]];then
-	break
-    fi
+	case $line in
+    exit)
+			break
+			;;
+	last)
+			echo $lastline
+			continue
+			;;	
+	esac
     hadoop fs -${line}
+	lastline=$line
 done

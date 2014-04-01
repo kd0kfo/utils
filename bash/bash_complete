@@ -1,0 +1,10 @@
+
+# service
+
+function _service_complete()
+{
+        local word=${COMP_WORDS[COMP_CWORD]}
+        
+    COMPREPLY=($(compgen -W "$(for i in $(ls /etc/init.d/*);do basename $i;done)" -- $word))
+}
+complete -F _service_complete service

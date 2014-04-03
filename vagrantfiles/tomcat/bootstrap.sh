@@ -20,6 +20,14 @@ make
 cp jsvc ../..
 cd ../..
 
+# Deploy wars if available
+cd /vagrant
+if [[ -d webapps ]];then
+	cd webapps/
+	cp *.war $CATALINA_HOME/webapps/
+	cd /vagrant
+fi
+
 CREATETAG=$(echo This machine was setup using vagrant on $(date +"%Y-%m-%d %H:%M"))
 CREATEFILE=/etc/hostinfo.created
 echo $CREATETAG > $CREATEFILE

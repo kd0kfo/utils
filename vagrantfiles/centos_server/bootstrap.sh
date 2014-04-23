@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-yum -y install postgresql-server httpd perl php python python-setuptools python-pip vim-enhanced emacs elinks gcc gcc-c++ java java-devel make git subversion
+yum -y install postgresql-server httpd perl php python python-setuptools vim-enhanced emacs elinks gcc gcc-c++ java java-devel make git subversion
+
+easy_install pip
 
 chkconfig postgresql on
 service postgresql initdb

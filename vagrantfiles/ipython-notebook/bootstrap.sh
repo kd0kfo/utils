@@ -15,6 +15,7 @@ pip install scipy
 pip install Cython
 pip install jinja2
 pip install tornado
+pip install pygments
 
 cd
 git clone https://github.com/zeromq/pyzmq.git

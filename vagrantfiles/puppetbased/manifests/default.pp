@@ -1,5 +1,15 @@
+class pip {
+	exec {"easy_install pip":
+		path => "/usr/local/bin:/usr/bin:/bin",
+		onlyif => "which easy_install",
+		unless => "which pip",
+	}
+}
+
 class devbox {
 	package {["python", "python-devel", "python-setuptools", "vim-enhanced", "emacs", "elinks", "gcc", "gcc-c++", "java", "java-devel", "make", "git", "subversion"]:}
+
+	class {"pip":}
 }
 
 node default {

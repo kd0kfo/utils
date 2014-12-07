@@ -10,7 +10,6 @@ def search(args):
         raise Exception("No database defined.")
     if not isfile(args.db):
         raise Exception("No such database: %s" % args.db)
-    print("Connecting to %s" % args.db)
     conn = sqlite3.connect(args.db)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()

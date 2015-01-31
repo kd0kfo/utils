@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+#
+# Jinjacli by David Coss, PhD
+#
+# Builds HTML from Jinja2 templates
+#
+# Available under GNU General Public License Version 3
+# which may be found at http://www.gnu.org/copyleft/gpl.html
+#
+from getopt import getopt, GetoptError
+from jinja2 import Environment, FileSystemLoader
+from os import listdir
+from os.path import basename, dirname, isfile, isdir, exists, join
+from sys import argv, stdout
+import yaml
+
+VERSION = "1.0.0"
+
+
+def get_templates(template_path):
+    if isfile(template_path):
+        return [env.get_template(template_path),]
+    return [f for f in os.listdir(template_path)]
+
+
+def open_outfile(target, template_path):
+    """
+    Takes a provided target and original template and opens a file
+    into which the HTML will be written. Target may be:
+    1. None, to use stdout
+    2. A directory, to write into the directory using the templates original file name
+    3. A file name, to open a file with the given name
+    """
+    if not target:
+        return stdout
+    elif isdir(target):
+        return open(join(target, basename(template_path)), "w")
+    return open(target, "w")
+
+
+try:
+    (opts, args) = getopt(argv[1:], "ho:p:", ["help", "output=", "parameters=", "version" ])
+except GetoptError as ge:
+    from sys import stderr
+    stderr.write("Invalid argument")
+    raise ge
+
+target = None
+template_dirs = "."
+template_path = None
+params = {}
+for (opt, optarg) in opts:
+    while opt[0] == "-":
+        opt = opt[1:]
+    if opt in ["h", "help"]:
+        print("Jinja2 HTML Builder")
+        print("Usage: jinjacli [options] <Template>")
+        print("Options:")
+        print("-h, --help\t\t\tThis help Dialog")
+        print("-o, --output\t\t\tOutput file name (Default standard output)")
+	print("-p, --parameters\t\tParameters file")
+        print("    --templatedirs PATHS\tComma separated list of directories (Default Current Directory)")
+        print("    --version\t\t\tVersion information")
+        exit(0)
+    elif opt in ["o", "output"]:
+        target = optarg
+    elif opt in ["p", "parameters"]:
+        params = yaml.load(open(optarg, "r"))
+    elif opt == "version":
+        print("Version %s" % VERSION)
+        exit(0)
+
+if not args:
+    raise Exception("Missing template file or directory")
+
+template_path = args[0]
+
+env = Environment(loader=FileSystemLoader(template_dirs))
+
+if not exists(template_path):
+    raise Exception("%s does not exist" % template_path)
+
+for template in get_templates(template_path):
+    output = open_outfile(target, template_path)
+    output.write(template.render(params))
+    if output != stdout:
+        output.close()

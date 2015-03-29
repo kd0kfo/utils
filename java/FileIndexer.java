@@ -85,6 +85,7 @@ public class FileIndexer {
 	  Scanner sc = null;
 	  try {
 	      sc = new Scanner(new File(args[i+1]));
+	      i++;
 	  } catch (FileNotFoundException fnfe) {
 	      System.err.println(fnfe.getMessage());
 	      System.exit(1);
